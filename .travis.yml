@@ -1,0 +1,27 @@
+language: python
+python:
+- '2.7'
+install:
+- pip install .
+script:
+- echo 'No tests'
+deploy:
+- provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: MFelVsE2fYDAHlmDHpK7M+Zj2rcBkVIOd5wo6SkvYRb4VyyzLX68u2qk+YU1M6iLV8Kg+ThkCxt7A0L3tRtaOHMmCcWG6f8nNHYcdb3951nvN7R0JR3a0xwBB/aa3A9SmxvHRVBid+k8eXnzgt/EPpFx7jWsipIJT/wK2emWgG4A6sybIVHREnY8lD9fWtFgVA774/5kzdnBWxQXtNmTa7FVQXXjLHfqR91k66GdMIvLHzoRhFmOxQZfJXcwrlrcOXOPvxzpYqWbRKNhbBbAyWBKvhbl5HMkIM+MAeGY/UFbJRKFQTr5FLp4BJlArIZPdc5ORc4l2jN8u7j2KSEvIfobTuAogYB+C4rU7I64plz+28DCuXgE+l/uBIAiPT41CTXr1EKd+IdkscM+/V6ZYnHf7/WLjU1r/IiqRAdd2KHCTTRK24cmAGai1NqVznjw6SpTy6LZ6EdW+Rfb12fWCJ3hm3AXDk8Y6pMPmCt7LQHFLD6dvUAlZrLtFQjiwz4m6Pn0RihBmw6YWEAuDZH3oSXBlkx90bFKV0AwzmHAkQQtazodHeI+i4wgvk8MuYH7R4cjd3+seOZllVepxl1bmuhdrLz0eFOPStCwgdynbT1aUW7ZLEQGDnZHymFt8vYPJITP6xNkopQsTTAA50WEyItHG+igvxrOoiDEA43b3JQ=
+  name: serverstats-0.1
+  tag_name: 0.1
+  on:
+    branch: master
+    repo: deep-compute/serverstats
+
+- provider: pypi
+  distributions: "sdist bdist_wheel"
+  skip_cleanup: true
+  user: "deepcompute"
+  password:
+    secure: AVjIxEVSLICDkMwxuMpMlAftbUSUgmHttaVLQZ7wZwAf/MPC5iv6TBKcd5PaDlQ9vDiWwHATqZHIqJn/dAx86UFem5F+MfWw7IZwhQoKt3khwKY1Sa3fnJ0f3NKj5DQVxVzBRZ2Nd0nNPjEZ8RsDfyoCIYv5XbR5MN16JjKH1oJUz53GcPR2kGRJ8hT0TaQe2S6QGA9k2TWF+58X7Q+s01HUClegk7AtLneTrH6XkmVY1f6r91oARKfY9ImnHjcYBt7B83FN07ehBA1sHR9qOJSD5OmpU2abL5bdNNb3QepcdOFE2A+Xt/SPmIPY54zorW3ZmnqcB92Hv3s9wu/ghySZx0DCMzkj/hXQUXfh2AowSouZYVOANoKoRJtx6ykI3minF1wBny9qg8k7YKbEVFgAyPjC5ubVItV3XTxD/279vOVU/7tpVDGAeuuwJJ+yiXjIWB3086H6zfH4hsgzEWag7teiCPQRrBT+68X+b7xWIwY7NlJ79Nf5ux8KWWPHG5K+Cqa4Vda2P84I3E2kt39pgHm66eMgVxg71v1+HHGskrecF8QTL8YyO+f9ZxgYFpiNfvLpakjnzz9dadLyGXNmrkiE9ZIp5d3aHfTqinm+k76nDvhxQqbcUaoAwKnnoClGVNWJa9kzvmbC8B8lUBIj6gjst600fKaC9K86msY=
+  on:
+    branch: master
+    tags: true
