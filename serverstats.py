@@ -1,7 +1,7 @@
 import psutil
 from time import sleep
 
-from deeputil import keeprunning
+from deeputil import keeprunning, AttrDict
 from basescript import BaseScript
 
 def get_system_metrics():
@@ -12,7 +12,7 @@ def get_system_metrics():
     load_avg_5_min = (load5 / float(cpu_count) * 100)
     load_avg_1_min = (load1 / float(cpu_count) * 100)
 
-    network_traffic = psutil.net_io_counters(pernic=True)
+    network_traffic_info = psutil.net_io_counters(pernic=True)
     cpu_stats = psutil.cpu_times()
     memory = psutil.virtual_memory()
     swap_mem = psutil.swap_memory()
@@ -23,12 +23,12 @@ def get_system_metrics():
     else:
         swapmemory_free_percent = (swap_mem.free / float(swap_mem.total) * 100)
 
-    network_traffic_info = dict()
-    for interface in network_traffic:
-        bytes_sent_interface='bytes_sent_%s' %interface
-        bytes_rcvd_interface='bytes_rcvd_%s' %interface
-        network_traffic_info[bytes_sent_interface]=network_traffic[interface].bytes_sent
-        network_traffic_info[bytes_rcvd_interface]=network_traffic[interface].bytes_recv
+    network_traffic = dict()
+    for interface in network_traffic_info:
+        network_traffic[interface] = { \
+                        'sent': network_traffic_info[interface].bytes_sent,
+                        'recieved':network_traffic_info[interface].bytes_recv \
+                                    }
 
     return dict(
         #load_avg info
@@ -70,7 +70,7 @@ def get_system_metrics():
                     ),
 
         #network traffic
-        network_traffic = network_traffic_info
+        network_traffic = network_traffic
     )
 
 class ServerStats(BaseScript):
