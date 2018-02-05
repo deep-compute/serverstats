@@ -3,11 +3,11 @@
 **Collect important system metrics from a server and log them**
 
 We support collecting metrics for the following components:
-* cpu
-* disk
-* network_traffic
-* ram
-* swapmemory
+* CPU
+* Disk
+* Network Traffic
+* RAM
+* Swap Memory
 
 ## Installation
 > Prerequisites: Python2.7
@@ -25,7 +25,7 @@ To set the time interval of collection:
 ```
 $ serverstats run --interval <int value>
 ```
-![](https://i.imgur.com/J4aUO7S.gif)
+![](https://i.imgur.com/vyuqL9G.gif)
 
 #### on python interpreter
 
@@ -33,34 +33,33 @@ $ serverstats run --interval <int value>
 ```
 >>> from serverstats import get_system_metrics
 >>> from pprint import pprint
-
 >>> pprint(get_system_metrics())
-{'cpu': {'idle_percent': 78.75,
-         'iowait': 2989.3,
-         'load1': 0.5,
-         'load15': 0.85,
-         'load5': 0.63,
-         'usage_precent': 21.25},
- 'disk': {'disk_free': 890965590016,
-          'disk_free_percent': 90.94094876747448,
-          'disk_total': 979718819840,
-          'disk_usage': 38962806784,
-          'disk_usage_percent': 4.2},
- 'network_traffic': {'enp4s0': {'recieved': 44961048, 'sent': 14742510},
-                     'lo': {'recieved': 459583, 'sent': 459583},
-                     'wlp5s0': {'recieved': 181141, 'sent': 99029}},
- 'ram': {'avail': 5848301568,
-         'avail_percent': 70.77202939317712,
-         'free': 2760843264,
+{'cpu': {'avg_load_15_min': 0.88,
+         'avg_load_1_min': 40.0,
+         'avg_load_5_min': 24.25,
+         'idle_percent': 78.0,
+         'iowait': 3215.11,
+         'usage_percent': 22.0},
+ 'disk': {'free': 889144725504,
+          'free_percent': 90.75509294076929,
+          'total': 979718819840,
+          'usage': 40783671296,
+          'usage_percent': 4.4},
+ 'network_traffic': {'enp4s0': {'received': 1881480065, 'sent': 93821861},
+                     'lo': {'received': 704884, 'sent': 704884},
+                     'wlp5s0': {'received': 262697, 'sent': 173003}},
+ 'ram': {'avail': 5829107712,
+         'avail_percent': 70.53975885698708,
+         'free': 504446976,
          'total': 8263577600,
-         'usage': 1706135552,
-         'usage_percent': 29.2},
- 'swapmemory': {'free': 3534168064,
-                'free_percent': 84.28228569084233,
-                'total': 4193251328,
-                'usage': 659083264,
-                'usage_percent': 15.7}}
-```
-![](https://i.imgur.com/srfpubK.gif)
+         'usage': 1494208512,
+         'usage_percent': 29.5},
+ 'swap': {'free': 3577421824,
+          'free_percent': 85.31379457539636,
+          'total': 4193251328,
+          'usage': 615829504,
+          'usage_percent': 14.7}}
 
+```
+![](https://i.imgur.com/64CwON7.gif)
 

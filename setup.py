@@ -27,7 +27,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
     ],
-    #test_suite = 'test.suite_maker'
+    test_suite = 'test.suite',
     entry_points={
         "console_scripts": [
             "serverstats = serverstats:main",

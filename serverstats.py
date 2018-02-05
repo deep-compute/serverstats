@@ -1,11 +1,13 @@
-import psutil
 from time import sleep
 
-from deeputil import keeprunning, AttrDict
+import psutil
+from deeputil import keeprunning
 from basescript import BaseScript
 
 def get_system_metrics():
-    # FIXME: look at this code and make it better
+    '''
+    
+    '''
     load1, load5, load15 = psutil.os.getloadavg()
     cpu_count = psutil.cpu_count()
     load_avg_15_min = (load15 / float(cpu_count) * 100)
@@ -25,57 +27,57 @@ def get_system_metrics():
 
     network_traffic = dict()
     for interface in network_traffic_info:
-        network_traffic[interface] = { \
-                        'sent': network_traffic_info[interface].bytes_sent,
-                        'recieved':network_traffic_info[interface].bytes_recv \
-                                    }
+        network_traffic[interface] = {
+            'sent': network_traffic_info[interface].bytes_sent,
+            'received' : network_traffic_info[interface].bytes_recv
+            }
 
     return dict(
         #load_avg info
-        cpu = dict(
-                usage_precent=load_avg_15_min,
-                idle_percent=100.00 - load_avg_15_min,
-                iowait=cpu_stats.iowait,
-                load15=load15,
-                load5=load5,
-                load1=load1
-                    ),
+        cpu=dict(
+            usage_percent=load_avg_15_min,
+            idle_percent=100.00 - load_avg_15_min,
+            iowait=cpu_stats.iowait,
+            avg_load_15_min=load15,
+            avg_load_5_min=load_avg_5_min,
+            avg_load_1_min=load_avg_1_min,
+            ),
 
         #ram info
-        ram = dict(
-                total=memory.total,
-                avail=memory.available,
-                usage=memory.used,
-                free=memory.free,
-                usage_percent=memory.percent,
-                avail_percent=(memory.available / float(memory.total) * 100)
-                    ),
+        ram=dict(
+            total=memory.total,
+            avail=memory.available,
+            usage=memory.used,
+            free=memory.free,
+            usage_percent=memory.percent,
+            avail_percent=(memory.available / float(memory.total) * 100)
+            ),
 
         #swap memory info
-        swapmemory = dict(
-                usage_percent=swap_mem.percent,
-                free_percent=swapmemory_free_percent,
-                total=swap_mem.total,
-                usage=swap_mem.used,
-                free=swap_mem.free,
-                        ),
+        swap=dict(
+            usage_percent=swap_mem.percent,
+            free_percent=swapmemory_free_percent,
+            total=swap_mem.total,
+            usage=swap_mem.used,
+            free=swap_mem.free,
+            ),
 
         #disk info
-        disk = dict(
-                disk_total=disk.total,
-                disk_usage=disk.used,
-                disk_free=disk.free,
-                disk_usage_percent=disk.percent,
-                disk_free_percent=(disk.free / float(disk.total) * 100),
-                    ),
+        disk=dict(
+            total=disk.total,
+            usage=disk.used,
+            free=disk.free,
+            usage_percent=disk.percent,
+            free_percent=(disk.free / float(disk.total) * 100),
+            ),
 
         #network traffic
-        network_traffic = network_traffic
+        network_traffic=network_traffic,
     )
 
 class ServerStats(BaseScript):
     NAME = 'ServerStats'
-    DESC = 'Gather load avg, ram usage and disk space statistics'
+    DESC = 'Collect important system metrics from a server and log them'
 
     def __init__(self):
         super(ServerStats, self).__init__()
@@ -84,18 +86,14 @@ class ServerStats(BaseScript):
     def _log_exception(self, exp):
         self.log.exception('Error during run ', exp=exp)
 
-    @keeprunning(on_error=_log_exception) #FIXME: configure this prop
+    @keeprunning(on_error=_log_exception)
     def _log_system_metrics(self):
-        try:
-            self.log.info('system_metrics', type='metric', **get_system_metrics())
-        except: 
-            raise
-        finally:
-            sleep(self.interval)
+        self.log.info('system_metrics', type='metric', **get_system_metrics())
+        sleep(self.interval)
 
     def define_args(self, parser):
         parser.add_argument('-n', '--interval', type=int, default=5, 
-                        help='Seconds to wait after collection of stats')
+                            help='Seconds to wait after collection of stats')
 
     def run(self):
         self._log_system_metrics()
@@ -105,4 +103,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
