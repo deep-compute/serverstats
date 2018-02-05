@@ -2,38 +2,65 @@
 # ServerStats
 **Collect important system metrics from a server and log them**
 
+We support collecting metrics for the following components:
+* cpu
+* disk
+* network_traffic
+* ram
+* swapmemory
 
 ## Installation
 > Prerequisites: Python2.7
-
-> Note: tested and it works in python2.7 and not tested in other versions.
 
 ```bash
 sudo pip install serverstats
 ```
 
 ## Usage
-![](https://i.imgur.com/SattCdR.gif)
 ```
 $ serverstats run
 ```
-Shows you the system metrics collected at every 5 sec interval
+Shows you the system metrics collected at every 5 sec (configurable) interval
 To set the time interval of collection:
 ```
 $ serverstats run --interval <int value>
 ```
+![](https://i.imgur.com/SattCdR.gif)
 
 #### on python interpreter
 
+
+```
+>>> from serverstats import get_system_metrics
+>>> from pprint import pprint
+
+>>> pprint(get_system_metrics())
+{'cpu': {'idle_percent': 78.75,
+         'iowait': 2989.3,
+         'load1': 0.5,
+         'load15': 0.85,
+         'load5': 0.63,
+         'usage_precent': 21.25},
+ 'disk': {'disk_free': 890965590016,
+          'disk_free_percent': 90.94094876747448,
+          'disk_total': 979718819840,
+          'disk_usage': 38962806784,
+          'disk_usage_percent': 4.2},
+ 'network_traffic': {'enp4s0': {'recieved': 44961048, 'sent': 14742510},
+                     'lo': {'recieved': 459583, 'sent': 459583},
+                     'wlp5s0': {'recieved': 181141, 'sent': 99029}},
+ 'ram': {'avail': 5848301568,
+         'avail_percent': 70.77202939317712,
+         'free': 2760843264,
+         'total': 8263577600,
+         'usage': 1706135552,
+         'usage_percent': 29.2},
+ 'swapmemory': {'free': 3534168064,
+                'free_percent': 84.28228569084233,
+                'total': 4193251328,
+                'usage': 659083264,
+                'usage_percent': 15.7}}
+```
 ![](https://i.imgur.com/srfpubK.gif)
-
-```
->>> import serverstats
-
->>> serverstats.get_system_metrics()
-{'disk': {'disk_usage': 33154150400, 'disk_total': 979718819840, 'disk_free_percent': 91.5338389178289, 'disk_free': 896774246400, 'disk_usage_percent': 3.6}, 'ram': {'avail': 4904124416, 'usage_percent': 40.7, 'avail_percent': 59.346262035465124, 'usage': 2394849280, 'total': 8263577600, 'free': 3126648832}, 'cpu': {'load1': 1.8, 'usage_precent': 53.75, 'load15': 2.15, 'idle_percent': 46.25, 'iowait': 570.01, 'load5': 1.85}, 'swapmemory': {'usage': 0, 'total': 4193251328, 'free_percent': 100.0, 'free': 4193251328, 'usage_percent': 0.0}, 'network_traffic': {'bytes_sent_lo': 126988710, 'bytes_sent_enp4s0': 98743690, 'bytes_sent_wlp5s0': 7857549, 'bytes_rcvd_enp4s0': 363820124, 'bytes_rcvd_lo': 126988710, 'bytes_rcvd_wlp5s0': 198589266}}
->>> 
-
-```
 
 
