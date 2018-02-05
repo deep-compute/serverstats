@@ -13,7 +13,7 @@ sudo pip install serverstats
 ```
 
 ## Usage
-![](https://i.imgur.com/nUzpBrT.gif)
+![](https://i.imgur.com/SattCdR.gif)
 
 #### on python interpreter
 ```
@@ -24,4 +24,3 @@ sudo pip install serverstats
 >>> 
 
 ```
-
