@@ -25,7 +25,7 @@ To set the time interval of collection:
 ```
 $ serverstats run --interval <int value>
 ```
-![](https://i.imgur.com/SattCdR.gif)
+![](https://i.imgur.com/J4aUO7S.gif)
 
 #### on python interpreter
 
