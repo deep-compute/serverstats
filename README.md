@@ -14,8 +14,19 @@ sudo pip install serverstats
 
 ## Usage
 ![](https://i.imgur.com/SattCdR.gif)
+```
+$ serverstats run
+```
+Shows you the system metrics collected at every 5 sec interval
+To set the time interval of collection:
+```
+$ serverstats run --interval <int value>
+```
 
 #### on python interpreter
+
+![](https://i.imgur.com/srfpubK.gif)
+
 ```
 >>> import serverstats
 
@@ -24,3 +35,5 @@ sudo pip install serverstats
 >>> 
 
 ```
+
+
