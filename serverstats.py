@@ -79,7 +79,7 @@ class ServerStats(BaseScript):
 
     def __init__(self):
         super(ServerStats, self).__init__()
-        self.collection_wait = self.args.collection_wait
+        self.interval = self.args.interval
 
     def _log_exception(self, exp):
         self.log.exception('Error during run ', exp=exp)
@@ -91,10 +91,10 @@ class ServerStats(BaseScript):
         except: 
             raise
         finally:
-            sleep(self.collection_wait)
+            sleep(self.interval)
 
     def define_args(self, parser):
-        parser.add_argument('-n', '--collection-wait', type=int, default=5, 
+        parser.add_argument('-n', '--interval', type=int, default=5, 
                         help='Seconds to wait after collection of stats')
 
     def run(self):
