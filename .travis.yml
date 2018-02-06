@@ -10,8 +10,8 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: EAZzz4nCgY6+XM4Jfhchr9Z6pkQBFRbWUlWN81nMWyo7PqMfsrJ/PKY7m5nn2oVjiCc5bRpVnrncgZ9CCtQDNTaLowHgp7WJEwWzKl0JvX/aI2oucT5+Q7ETFPcYT1Pkgg+XFxU899HvFhDAI7aW43FKCKproCkIJoICZnYOviOocnYtkb1wpaSJQ+aOM9wq3JWbU83Tz5vhj/fQTJYYpiCiqbnpwdde3ki+V9YJYvZu4pNNj0/TZYNlfQTEF9Czdib3AlMWjSWGA6UxpegW1ZTLsTVbtU1xX+5k5QhunevGvvpFrZYFdrA8173Qb5ibU2yHKV1uaXA9jfPsjdAUjNMAgvpoJz+rXGZPfN8IGCHYHG86ar+CeRrW/PIRqFA9ABdQm3tJ7Xk4xj9+L7AKRn88rjVfMSBwv9rAPmLWhh77spwXAnjxC0f8n/W5wb4q1l7aAxFuK9alzC4N0rvuyNGCgUpCDsfHKP2kmi1GwjU11OZoEnFVFSO0zQv1auF11a1LdzN7vLIETW9xylxNafm+TndoKrzBl7HnxiIVRcnGh52nSlaWk5Cq8aFN8PkevpoFj9MQtD+fLs/9NkDqqwiYZ71sZ7USpE5UD5IWIA7B0ztMS+usa4CGI+QtFfpzWK//gd/Gt1j+XkFcshaY279EozZ/vop5FESSw+ibpi8=
-  name: serverstats-0.1.1
-  tag_name: 0.1.1
+  name: serverstats-0.1.2
+  tag_name: 0.1.2
   on:
     branch: master
     repo: deep-compute/serverstats
