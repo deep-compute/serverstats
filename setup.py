@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name="serverstats",
-    version="0.1",
+    version="0.1.2",
     description="Collect important system metrics from a server and log them",
     keywords="serverstats",
     author="Deep Compute, LLC",

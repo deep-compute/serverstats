@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 import doctest
-import unittest
 
-import serverstats
+from serverstats import serverstats
 
 suite = doctest.DocTestSuite(serverstats)
 
