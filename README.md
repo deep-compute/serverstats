@@ -10,13 +10,20 @@ We support collecting metrics for the following components:
 * Swap Memory
 
 ## Installation
+### pip
 > Prerequisites: Python2.7
 
-```bash
-sudo pip install serverstats
+```
+$ sudo pip install serverstats
+```
+### docker
+> Prerequisites: Docker >= 17.05
+```
+$ docker pull deepcompute/serverstats:1.0
 ```
 
 ## Usage
+### Basic
 ```
 $ serverstats run
 ```
@@ -27,7 +34,7 @@ $ serverstats run --interval <int value>
 ```
 ![](https://i.imgur.com/vyuqL9G.gif)
 
-#### on python interpreter
+##### In python interpreter
 
 
 ```
@@ -62,4 +69,13 @@ $ serverstats run --interval <int value>
 
 ```
 ![](https://i.imgur.com/64CwON7.gif)
+
+### Docker run
+```
+$ docker run deepcompute/serverstats:1.0
+```
+```
+$ docker run deepcompute/serverstats:1.0 serverstats run --interval 2
+```
+![docker_demo](https://user-images.githubusercontent.com/33823698/36727142-31ac6aca-1be2-11e8-89af-30d199d6d79b.gif)
 
