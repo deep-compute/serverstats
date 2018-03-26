@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name="serverstats",
-    version="0.1.5",
+    version="0.1.6",
     description="Collect important system metrics from a server and log them",
     keywords="serverstats",
     author="Deep Compute, LLC",
@@ -16,7 +16,8 @@ setup(
     install_requires=[
         "basescript==0.2.0",
         "psutil==5.4.3",
-        "deeputil==0.1.2",
+        "deeputil==0.2.5",
+        "flatten-dict==0.0.2",
     ],
     package_dir={'serverstats': 'serverstats'},
     packages=find_packages('.'),
