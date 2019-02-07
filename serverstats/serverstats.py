@@ -40,15 +40,14 @@ def get_system_metrics():
 
     '''
     load1, load5, load15 = psutil.os.getloadavg()
-    cpu_count = psutil.cpu_count()
-    load_avg_15_min = (load15 / cpu_count * 100)
-    load_avg_5_min = (load5 / cpu_count * 100)
-    load_avg_1_min = (load1 / cpu_count * 100)
+    cpu_percent = psutil.cpu_percent()
+    cpu_stats = psutil.cpu_times()
 
     network_traffic_info = psutil.net_io_counters(pernic=True)
-    cpu_stats = psutil.cpu_times()
+
     memory = psutil.virtual_memory()
     swap_mem = psutil.swap_memory()
+
     disk = psutil.disk_usage('/')
 
     if swap_mem.total == 0.0:
@@ -66,12 +65,12 @@ def get_system_metrics():
     return dict(
         #load_avg info
         cpu=dict(
-            usage_percent=float(load_avg_15_min),
-            idle_percent=float(100.00 - load_avg_15_min),
+            usage_percent=float(cpu_percent),
+            idle_percent=float(100.00 - cpu_percent),
             iowait=float(cpu_stats.iowait),
             avg_load_15_min=float(load15),
-            avg_load_5_min=float(load_avg_5_min),
-            avg_load_1_min=float(load_avg_1_min),
+            avg_load_5_min=float(load5),
+            avg_load_1_min=float(load15),
             ),
 
         #ram info
@@ -115,7 +114,7 @@ class ServerStats(BaseScript):
         self.interval = self.args.interval
 
     def _log_exception(self, exp):
-        self.log.exception('Error during run ', exp=exp)
+        self.log.exception('error_during_run ', exp=exp)
 
     @keeprunning(on_error=_log_exception)
     def _log_system_metrics(self):
@@ -123,7 +122,7 @@ class ServerStats(BaseScript):
         sleep(self.interval)
 
     def define_args(self, parser):
-        parser.add_argument('-n', '--interval', type=int, default=5,
+        parser.add_argument('-i', '--interval', type=int, default=5,
                             help='Seconds to wait after collection of stats')
 
     def run(self):
