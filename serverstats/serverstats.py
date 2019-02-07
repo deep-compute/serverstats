@@ -4,7 +4,7 @@ import psutil
 from deeputil import keeprunning
 from basescript import BaseScript
 
-def get_system_metrics():
+def get_system_metrics(mount_points=""):
     '''
     For keys in fields
 
@@ -50,6 +50,11 @@ def get_system_metrics():
     memory = psutil.virtual_memory()
     swap_mem = psutil.swap_memory()
     disk = psutil.disk_usage('/')
+    mount_disk_usage = {}
+    if mount_points:
+        mount_points = mount_points.split(",")
+        for i in mount_points:
+            mount_disk_usage[i] = psutil.disk_usage(i)
 
     if swap_mem.total == 0.0:
         swapmemory_free_percent = 0.0
@@ -63,7 +68,7 @@ def get_system_metrics():
             'received' : float(network_traffic_info[interface].bytes_recv),
             }
 
-    return dict(
+    stats = dict(
         #load_avg info
         cpu=dict(
             usage_percent=float(load_avg_15_min),
@@ -102,9 +107,23 @@ def get_system_metrics():
             free_percent=float((disk.free / disk.total * 100)),
             ),
 
+
         #network traffic
         network_traffic=network_traffic,
     )
+
+    if mount_points:
+        stats["mount_points"] = [
+            dict(
+                total=float(disk.total),
+                usage=float(disk.used),
+                free=float(disk.free),
+                usage_percent=float(disk.percent),
+                free_percent=float((disk.free / disk.total * 100)),
+                mount_point=i
+            )
+            for i in mount_points],
+    return stats
 
 class ServerStats(BaseScript):
     NAME = 'ServerStats'
@@ -119,12 +138,14 @@ class ServerStats(BaseScript):
 
     @keeprunning(on_error=_log_exception)
     def _log_system_metrics(self):
-        self.log.info('system_metrics', type='metric', **get_system_metrics())
+        self.log.info('system_metrics', type='metric', **get_system_metrics(self.args.mount))
         sleep(self.interval)
 
     def define_args(self, parser):
         parser.add_argument('-n', '--interval', type=int, default=5,
                             help='Seconds to wait after collection of stats')
+        parser.add_argument('-m', '--mount', type=str, default="",
+                            help='check for other mount points, comma seperated mount points')
 
     def run(self):
         self._log_system_metrics()
