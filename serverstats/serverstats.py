@@ -50,11 +50,11 @@ def get_system_metrics(mount_points=""):
     memory = psutil.virtual_memory()
     swap_mem = psutil.swap_memory()
     disk = psutil.disk_usage('/')
-    mount_disk_usage = {}
+    mount_disk_usage = []
     if mount_points:
         mount_points = mount_points.split(",")
         for i in mount_points:
-            mount_disk_usage[i] = psutil.disk_usage(i)
+            mount_disk_usage.append(psutil.disk_usage(i))
 
     if swap_mem.total == 0.0:
         swapmemory_free_percent = 0.0
@@ -115,14 +115,14 @@ def get_system_metrics(mount_points=""):
     if mount_points:
         stats["mount_points"] = [
             dict(
-                total=float(disk.total),
-                usage=float(disk.used),
-                free=float(disk.free),
-                usage_percent=float(disk.percent),
-                free_percent=float((disk.free / disk.total * 100)),
-                mount_point=i
+                total=float(mount_disk_usage[index].total),
+                usage=float(mount_disk_usage[index].used),
+                free=float(mount_disk_usage[index].free),
+                usage_percent=float(mount_disk_usage[index].percent),
+                free_percent=float((mount_disk_usage[index].free / mount_disk_usage[index].total * 100)),
+                mount_point=name
             )
-            for i in mount_points],
+            for index, name in enumerate(mount_points)],
     return stats
 
 class ServerStats(BaseScript):
