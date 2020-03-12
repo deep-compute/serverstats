@@ -13,7 +13,7 @@ setup(
     dependency_links=["https://github.com/deep-compute/serverstats"],
     install_requires=[
         "basescript==0.2.0",
-        "psutil==5.4.3",
+        "psutil==5.6.6",
         "deeputil==0.2.5",
         "flatten-dict==0.0.2",
     ],
