@@ -11,7 +11,7 @@ We support collecting metrics for the following components:
 
 ## Installation
 ### pip
-> Prerequisites: Python2.7
+> Prerequisites: Python3.8
 
 ```
 $ sudo pip install serverstats
