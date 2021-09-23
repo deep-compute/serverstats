@@ -15,40 +15,38 @@ def get_system_metrics():
     >>> from serverstats import get_system_metrics
     >>> fields = dict()
     >>> dl = get_system_metrics()
-    >>> _fields = {'cpu': ['avg_load_5_min',
-    ...                   'avg_load_15_min',
-    ...                   'idle_percent',
-    ...                   'iowait',
-    ...                   'avg_load_1_min',
-    ...                   'usage_percent'],
-    ...           'disk': ['usage', 'total', 'free_percent', 'usage_percent', 'free'],
-    ...           'ram': ['avail', 'usage_percent', 'avail_percent', 'usage', 'total', 'free'],
-    ...           'swap': ['usage', 'total', 'free_percent', 'free', 'usage_percent']}
-    >>>
-    >>> for key, value in dl.iteritems():
+    >>> _fields = {
+    ...     'cpu': ['usage_percent', 'idle_percent', 'iowait',
+    ...             'avg_load_15_min', 'avg_load_5_min', 'avg_load_1_min'],
+    ...     'cpu_times': ['user', 'nice', 'system', 'idle', 'iowait',
+    ...             'irq', 'softirq', 'steal', 'guest', 'guest_nice'],
+    ...     'cpu_stats': ['ctx_switches', 'interrupts', 'soft_interrupts', 'syscalls'],
+    ...     'cpu_times_percent': ['user', 'nice', 'system', 'idle',
+    ...             'iowait', 'irq', 'softirq', 'steal', 'guest', 'guest_nice'],
+    ...     'ram': ['total', 'available', 'percent', 'used', 'free',
+    ...             'active', 'inactive', 'buffers', 'cached', 'shared', 'slab'],
+    ...     'swap': ['total', 'used', 'free', 'percent', 'sin', 'sout'],
+    ...     'disk': ['total', 'free', 'used', 'percent'],
+    ...     'disk_partitions': ['sda1', 'sda15'],
+    ...     'disk_io_counters': ['sda1', 'sda15'],
+    ...     'network_traffic': ['lo', 'eth0']}
+    >>> for key, value in dl.items():
     ...     lst = list()
-    ...     if type(value) is dict and key != 'network_traffic':
-    ...         for t , c in value.iteritems():
+    ...     if type(value) is dict:
+    ...         for t , c in value.items():
     ...             lst.append(t)
     ...         fields[key] = lst
     ...
     >>> _fields == fields
     True
-
-    For type of every field
-
-    >>> from flatten_dict import flatten
-    >>> flat_dl = flatten(dl)
-    >>> for key in flat_dl:
-    ...     assert isinstance(flat_dl[key], float)
-
     """
+
     load1, load5, load15 = psutil.os.getloadavg()
     cpu_percent = psutil.cpu_percent()
     cpu_times = psutil.cpu_times()._asdict()
     cpu_stats = psutil.cpu_stats()._asdict()
     percpu_percent = psutil.cpu_percent(interval=None, percpu=True)
-    cpu_times_percent = psutil.cpu_times_percent(interval=None, percpu=False)
+    cpu_times_percent = psutil.cpu_times_percent(interval=None, percpu=False)._asdict()
     cpu_count = psutil.cpu_count(logical=True)
     cpu_freq = [freq._asdict() for freq in psutil.cpu_freq(percpu=True)]
 
@@ -70,17 +68,16 @@ def get_system_metrics():
         _usage = psutil.disk_usage(part.mountpoint)
         disk_partitions.update({device: {**usage, **_usage._asdict()}})
 
-    disk_usage = {}
-    disk_usage["total"] = 0
-    disk_usage["free"] = 0
-    disk_usage["used"] = 0
-    disk_usage["percent"] = 0
-    for k, v in disk_partitions.items():
-        disk_usage["total"] += v.get("total")
-        disk_usage["used"] += v.get("used")
-        disk_usage["free"] += v.get("free")
-        disk_usage["percent"] += v.get("percent")
-    disk_usage["percent"] = disk_usage["percent"]/len(disk_partitions)
+    disk = {}
+    disk["total"] = 0
+    disk["used"] = 0
+    disk["percent"] = 0
+    for key, val in disk_partitions.items():
+        disk["total"] += val.get("total")
+        disk["used"] += val.get("used")
+        disk["percent"] += val.get("percent")
+    disk["free"] = disk["total"]-disk["used"]
+    disk["percent"] = disk["percent"]/len(disk_partitions)
 
     disk_io_counters = {}
     for key, val in psutil.disk_io_counters(perdisk=True, nowrap=False).items():
@@ -129,7 +126,7 @@ def get_system_metrics():
         # swap memory info
         swap=swap_mem,
         # disk info
-        disk=disk_usage,
+        disk=disk,
         # disk partitions info
         disk_partitions = disk_partitions,
         # disk io counter
